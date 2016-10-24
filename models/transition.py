@@ -122,9 +122,9 @@ def get_model(sess, image_shape=(80, 160, 3), gf_dim=64, df_dim=64, batch_size=6
       T.save_weights(checkpoint_dir+"/T_weights.keras", True)
 
     def sampler(z, x):
-      video = np.zeros((128, 80, 160, 3))
+      video = np.zeros((64, 80, 160, 3)) #128->64
       print "Sampling..."
-      for i in range(128):
+      for i in range(64): #128->64
         print i
         x = x.reshape((-1, 80, 160, 3))
         # code = E.predict(x, batch_size=batch_size*(time+1))[0]
