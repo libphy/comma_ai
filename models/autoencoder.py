@@ -15,8 +15,8 @@ os.environ["KERAS_BACKEND"] = "tensorflow"
 import numpy as np
 import cv2
 import tensorflow as tf
-from utils import load, save
-from layers import Deconv2D
+from .utils import load, save #. is added for python 3 imporing module issues
+from .layers import Deconv2D
 from keras import backend as K
 from keras.layers import Input, Dense, Reshape, Activation, Convolution2D, LeakyReLU, Flatten, BatchNormalization as BN
 from keras.models import Sequential, Model
@@ -141,17 +141,17 @@ def get_model(sess, image_shape=(80, 160, 3), gf_dim=64, df_dim=64, batch_size=6
       G = generator(batch_size, gf_dim, ch, rows, cols)
       G.compile("sgd", "mse")
       g_vars = G.trainable_weights
-      print "G.shape: ", G.output_shape
+      print("G.shape: ", G.output_shape)
 
       E = encoder(batch_size, df_dim, ch, rows, cols)
       E.compile("sgd", "mse")
       e_vars = E.trainable_weights
-      print "E.shape: ", E.output_shape
+      print("E.shape: ", E.output_shape)
 
       D = discriminator(batch_size, df_dim, ch, rows, cols)
       D.compile("sgd", "mse")
       d_vars = D.trainable_weights
-      print "D.shape: ", D.output_shape
+      print("D.shape: ", D.output_shape)
 
       Z2 = Input(batch_shape=(batch_size, z_dim), name='more_noise')
       Z = G.input
@@ -180,15 +180,15 @@ def get_model(sess, image_shape=(80, 160, 3), gf_dim=64, df_dim=64, batch_size=6
       e_loss = kl_loss + like_loss
 
       # optimizers
-      print "Generator variables:"
+      print("Generator variables:")
       for v in g_vars:
-        print v.name
-      print "Discriminator variables:"
+        print(v.name)
+      print("Discriminator variables:")
       for v in d_vars:
-        print v.name
-      print "Encoder variables:"
+        print(v.name)
+      print("Encoder variables:")
       for v in e_vars:
-        print v.name
+        print(v.name)
 
       e_optim = tf.train.AdamOptimizer(learning_rate, beta1=beta1).minimize(e_loss, var_list=e_vars)
       d_optim = tf.train.AdamOptimizer(learning_rate, beta1=beta1).minimize(d_loss, var_list=d_vars)
